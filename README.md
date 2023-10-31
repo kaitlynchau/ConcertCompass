@@ -2,25 +2,27 @@ The content below is an example project proposal / requirements document. Replac
 
 (__TODO__: your project name)
 
-# Shoppy Shoperson 
+# Concert Compass
 
 ## Overview
 
 (__TODO__: a brief one or two paragraph, high-level description of your project)
 
-Remembering what to buy at the grocery store is waaaaay too difficult. Also, shopping for groceries when you're hungry leads to regrettable purchases. Sooo... that's where Shoppy Shoperson comes in!
+Concerts are a great way to spend time with friends while enjoying new and unique music. In a city like New York where there is an event always happening, it can be difficult to keep track of concerts happening nearby, as well as memorializing all the concerts that you have been to. 
+Concert Compass solves just that!
 
-Shoppy Shoperson is a web app that will allow users to keep track of multiple grocery lists. Users can register and login. Once they're logged in, they can create or view their grocery list. For every list that they have, they can add items to the list or cross off items.
+Concert Compass is a web application that allows users to log all the concerts that they have attended. Users can register and login. Once they're logged in, they can create and view the different concerts that they have attended in the past or in the future. In addition, they can connect their Spotify to generate a list of upcoming concerts that they can add to the concert list. 
 
 
 ## Data Model
 
 (__TODO__: a description of your application's data and their relationships to each other) 
 
-The application will store Users, Lists and Items
+The application will store Users, Concert Log, and Upcoming Concert Events by location.
 
-* users can have multiple lists (via references)
-* each list can have multiple items (by embedding)
+* each users can attend many concerts (1- many user-concert)
+* each user can have one associated spotify account (1-1 user-spotify)
+* each concert can be attended by many users (many-many concert-user)
 
 (__TODO__: sample documents)
 
@@ -28,23 +30,23 @@ An Example User:
 
 ```javascript
 {
-  username: "shannonshopper",
-  hash: // a password hash,
-  lists: // an array of references to List documents
+  username: "tameImpalaLover2010",
+  password: // a password hashed and salted,
+  spotifyAccount: //spotify account information,
+  concerts: // an array of references to List documents
 }
-```
 
-An Example List with Embedded Items:
+```
+An Example Concert: 
 
 ```javascript
 {
-  user: // a reference to a User object
-  name: "Breakfast foods",
-  items: [
-    { name: "pancakes", quantity: "9876", checked: false},
-    { name: "ramen", quantity: "2", checked: true},
-  ],
-  createdAt: // timestamp
+  concertID: //unique to specific concert 
+  artist: //artist or band
+  venue: 
+  location: //city,state
+  date:
+  status: //attended, upcoming
 }
 ```
 
