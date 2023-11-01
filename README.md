@@ -44,7 +44,7 @@ An Example Concert:
   concertID: //unique to specific concert 
   artist: //artist or band
   venue: 
-  location: //city,state
+  location: //city, state
   date:
   status: //attended, upcoming
 }
@@ -92,16 +92,15 @@ Here's a [complex example from wikipedia](https://upload.wikimedia.org/wikipedia
 
 (__TODO__: the research topics that you're planning on working on along with their point values... and the total points of research topics listed)
 
-* (5 points) Integrate user authentication
-    * I'm going to be using passport for user authentication
-    * And account has been made for testing; I'll email you the password
-    * see <code>cs.nyu.edu/~jversoza/ait-final/register</code> for register page
-    * see <code>cs.nyu.edu/~jversoza/ait-final/login</code> for login page
-* (4 points) Perform client side form validation using a JavaScript library
-    * see <code>cs.nyu.edu/~jversoza/ait-final/my-form</code>
-    * if you put in a number that's greater than 5, an error message will appear in the dom
-* (5 points) vue.js
-    * used vue.js as the frontend framework; it's a challenging library to learn, so I've assigned it 5 points
+
+* (2 points) Semantic UI
+  * use Semantic UI for front-end development
+* (3 points) vite
+    * used vite as build tool and task runner. 
+* (2 points) ESlint
+    * Integrate ESLint into my workflow
+* (6 points) React
+    * use React as the frontend framework, which is assigned 6 points.
 
 10 points total out of 8 required points (___TODO__: addtional points will __not__ count for extra credit)
 
