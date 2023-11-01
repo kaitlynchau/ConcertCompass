@@ -1,12 +1,8 @@
 The content below is an example project proposal / requirements document. Replace the text below the lines marked "__TODO__" with details specific to your project. Remove the "TODO" lines.
 
-(__TODO__: your project name)
-
 # Concert Compass
 
 ## Overview
-
-(__TODO__: a brief one or two paragraph, high-level description of your project)
 
 Concerts are a great way to spend time with friends while enjoying new and unique music. In a city like New York where there is an event always happening, it can be difficult to keep track of concerts happening nearby, as well as memorializing all the concerts that you have been to. 
 Concert Compass solves just that!
@@ -15,8 +11,6 @@ Concert Compass is a web application that allows users to log all the concerts t
 
 
 ## Data Model
-
-(__TODO__: a description of your application's data and their relationships to each other) 
 
 The application will store Users, Concert Log, and Upcoming Concert Events by location.
 
@@ -50,7 +44,7 @@ An Example Concert:
 ```
 
 
-## [Link to Commented First Draft Schema](db.mjs) 
+## [Link to Commented First Draft Schema](src/db.mjs) 
 
 (__TODO__: create a first draft of your Schemas in db.mjs and link to it)
 
@@ -95,7 +89,7 @@ Here's a [complex example from wikipedia](https://upload.wikimedia.org/wikipedia
 10 points total out of 8 required points (___TODO__: addtional points will __not__ count for extra credit)
 
 
-## [Link to Initial Main Project File](app.mjs) 
+## [Link to Initial Main Project File](src/App.mjs) 
 
 (__TODO__: create a skeleton Express application with a package.json, app.mjs, views folder, etc. ... and link to your initial app.mjs)
 
