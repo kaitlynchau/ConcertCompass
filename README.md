@@ -68,13 +68,13 @@ An Example Concert:
 
 
 * (2 points) Semantic UI
-  * use Semantic UI for front-end development
+  * Use Semantic UI for front-end development
 * (3 points) vite
-    * used vite as build tool and task runner. 
+    * Used vite as build tool and task runner. 
 * (2 points) ESlint
     * Integrate ESLint into my workflow
 * (6 points) React
-    * use React as the frontend framework, which is assigned 6 points.
+    * Use React as the frontend framework, which is assigned 6 points.
 
 13 points total out of 10 required points 
 
@@ -83,5 +83,7 @@ An Example Concert:
 
 ## Annotations / References Used
 
-1. [Tutorial on react](https://react.dev/) [Source](src)
-2. [Mongoose Databases](https://cs.nyu.edu/courses/fall23/CSCI-UA.0467-001/_site/homework/04.html) [Database](src/db.mjs) 
+1. [Tutorial on react](https://react.dev/) 
+  * [Source](src)
+2. [Mongoose Databases](https://cs.nyu.edu/courses/fall23/CSCI-UA.0467-001/_site/homework/04.html) 
+  *[Database](src/db.mjs)
