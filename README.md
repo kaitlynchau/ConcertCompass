@@ -1,5 +1,3 @@
-The content below is an example project proposal / requirements document. Replace the text below the lines marked "__TODO__" with details specific to your project. Remove the "TODO" lines.
-
 # Concert Compass
 
 ## Overview
@@ -7,7 +5,7 @@ The content below is an example project proposal / requirements document. Replac
 Concerts are a great way to spend time with friends while enjoying new and unique music. In a city like New York where there is an event always happening, it can be difficult to keep track of concerts happening nearby, as well as memorializing all the concerts that you have been to. 
 Concert Compass solves just that!
 
-Concert Compass is a web application that allows users to log all the concerts that they have attended. Users can register and login. Once they're logged in, they can create and view the different concerts that they have attended in the past or in the future. In addition, they can connect their Spotify to generate a list of upcoming concerts that they can add to the concert list. 
+Concert Compass is a web application that allows users to log all the concerts that they have attended. Users can sregister and login. Once they're logged in, they can create and view the different concerts that they have attended in the past or in the future. In addition, they can connect their Spotify to generate a list of upcoming concerts that they can add to the concert list. 
 
 
 ## Data Model
@@ -51,13 +49,11 @@ An Example Concert:
 
 ![login, home page](documentation/login_home.png)
 
-/add- page to add concert information
+/add - page to add concert information
 
-![adding task] (documentation/add_task.png)
+![adding task](documentation/add_task.png)
 
-## Site map
-
-(documentation/sitemap.png)
+## [Site map](documentation/sitemap.png)
 
 
 ## User Stories or Use Cases
@@ -87,5 +83,5 @@ An Example Concert:
 
 ## Annotations / References Used
 
-1. [Tutorial on react](https://react.dev/) - (/src)
-2. [Mongoose Databases](https://cs.nyu.edu/courses/fall23/CSCI-UA.0467-001/_site/homework/04.html) - (src/db.mjs) 
+1. [Tutorial on react](https://react.dev/) [Source](src)
+2. [Mongoose Databases](https://cs.nyu.edu/courses/fall23/CSCI-UA.0467-001/_site/homework/04.html) [Database](src/db.mjs) 
