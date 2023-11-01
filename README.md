@@ -63,6 +63,7 @@ An Example Concert:
 3. as a user, I can log a new concert that is either upcoming or attended.
 4. as a user, I can view all of the concerts that I have attended or will attend.
 6. as a user, I can view the automatically updated lists of concerts.
+7. as a user, I can view insights on my concert attendance.
 
 ## Research Topics
 
