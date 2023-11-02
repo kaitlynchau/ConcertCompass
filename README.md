@@ -69,13 +69,13 @@ An Example Concert:
 
 
 * (2 points) Semantic UI
-  * Use Semantic UI for front-end development.
+  * Use Semantic UI for front-end development. This is a development framework that helps create responsive layouts, using classes to add CSS to elements. This would work really hand-in hand with react.
 * (3 points) vite
-    * Used vite as build tool and task runner. 
+    * Used vite as build tool and task runner. This is a tool to build fast and optimized web applications, through using a modern build system. This helps create a fast development server to provide efficient and streamlined development.
 * (2 points) ESlint
-    * Integrate ESLint into my workflow.
+    * Integrate ESLint into my workflow, which is a code analysis tool to check Javascript code for format, syntax and code style violations. This helps ensure that my code is readable and clean.
 * (6 points) React
-    * Use React as the frontend framework, which is assigned 6 points.
+    * Use React as the frontend framework, which is assigned 6 points. This development server is highly functional and builds UI interactions that communicate with server efficiently, and I hope to use this over express.
 
 13 points total out of 10 required points 
 
