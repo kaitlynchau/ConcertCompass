@@ -8,7 +8,6 @@ mongoose.connect(process.env.DSN);
 //Concert Schema
 
 const Concert = new mongoose.Schema({
-    concertID: Number,
     artist: String,
     venue: String,
     location: String,
