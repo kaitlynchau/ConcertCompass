@@ -33,3 +33,7 @@
 // .catch(error => {
 //   console.error('Error:', error.message);
 // });
+
+
+//https://developer.spotify.com/documentation/web-api/tutorials/getting-started
+//https://developer.spotify.com/documentation/web-api/concepts/api-calls
