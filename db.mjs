@@ -23,4 +23,5 @@ const User = new mongoose.Schema({
     concerts: Array
 });
 
-mongoose.model('Conceert', Concert);
+mongoose.model('Concert', Concert);
+mongoose.model('User', User);
