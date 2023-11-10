@@ -30,9 +30,9 @@ app.get('/', (req, res) => {
   });
 
 Concert.find(query)
-  .then((concert) => {
+  .then((reviews) => {
     // You can get the count of the results directly from 'varToStoreResult.length'
-    res.render('concert', { class: concert, count: res.locals.count });
+    res.render('review', { class: reviews, count: res.locals.count });
   })
   .catch((err) => {
     console.error(err);
