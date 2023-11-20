@@ -1,11 +1,10 @@
 body {
-	font-family: 'Fira Sans Extra Condensed', sans-serif;
+	font-family: 'monospace', sans-serif;
 }
 
 table {
     width: 100%;
     color: black;
-    font-family: monospace;
     font-size: 25px;
     text-align: left;
 }

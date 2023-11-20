@@ -71,10 +71,11 @@ app.post('/concerts/add', (req, res) => {
 
 });
 
-app.post('/concerts/delete/', (req, res) => {
+app.post('/concerts/delete/:id', (req, res) => {
   const concertId = req.params.id;
+  const objectId = new mongoose.Types.ObjectId(concertId);
 
-  Concert.findOneAndDelete(concertId)
+  Concert.deleteOne({_id: objectId})
     .then(() => {
       res.redirect('/');
     })

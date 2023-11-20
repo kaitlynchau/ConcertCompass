@@ -5,6 +5,7 @@
         <th>Location</th>
         <th>Date</th>
         <th>Status</th>
+        <th>Remove Entry</th>
     </tr>
 
     {{#each class}}
@@ -14,11 +15,15 @@
             <td>{{location}}</td>
             <td>{{date}}</td>
             <td>{{status}}</td>
+            <td>
+                <form action="/concerts/delete/{{this._id}}" method="POST">
+                    <button type="submit">X</button>
+                </form>
+            </td>
+
             
         </tr>
     {{/each}}
-    <form action="/concerts/delete/{{this._id}}" method="POST">
-        <button type="submit">Delete</button>
-    </form>
+   
 
 </table>
