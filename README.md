@@ -10,7 +10,7 @@ Concert Compass is a web application that allows users to log all the concerts t
 
 ## Data Model
 
-The application will store Users, Concert Log, and Upcoming Concert Events by location.
+The application will store Users and Concert Log. 
 
 * each users can attend many concerts (1- many user-concert)
 * each user can have one associated account (1-1 user-account)
