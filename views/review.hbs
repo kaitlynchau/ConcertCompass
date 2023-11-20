@@ -14,7 +14,11 @@
             <td>{{location}}</td>
             <td>{{date}}</td>
             <td>{{status}}</td>
+            
         </tr>
     {{/each}}
+    <form action="/concerts/delete/{{this._id}}" method="POST">
+        <button type="submit">Delete</button>
+    </form>
 
 </table>

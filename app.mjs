@@ -40,6 +40,8 @@ Concert.find(query)
 
 });
 
+
+
 //render form to add new tasks
 app.get('/concerts/add', (req, res) => {
   res.render('add', {count: res.locals.count});
@@ -69,6 +71,21 @@ app.post('/concerts/add', (req, res) => {
 
 });
 
+app.post('/concerts/delete/', (req, res) => {
+  const concertId = req.params.id;
 
-app.listen(process.env.PORT || 3000);
+  Concert.findOneAndDelete(concertId)
+    .then(() => {
+      res.redirect('/');
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Internal Server Error');
+    });
+});
+
+
+
+//app.listen(process.env.PORT || 3000);
+app.listen(3000);
 
