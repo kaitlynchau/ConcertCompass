@@ -23,10 +23,6 @@ app.set('view engine', 'hbs');
 // app.use(session(sessionOptions));
 app.use(express.urlencoded({ extended: false }));
 
-app.get('login', (req, res) => {
-  res.render('login');
-}
-);
 
 app.get('/concerts/edit/:id', (req, res) => {
   const concertId = req.params.id;
@@ -139,7 +135,6 @@ app.post('/edit/:id', (req, res) => {
     });
 });
 
-app.post('/')
 
 
 let token =process.env.SPOTIFY_TOKEN;
@@ -209,6 +204,6 @@ app.use('/', router);
 
 
 
-app.listen(process.env.PORT || 3000);
+app.listen(process.env.PORT);
 // app.listen(3000);
 
