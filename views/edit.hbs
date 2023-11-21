@@ -1,0 +1,19 @@
+<form method="POST" action="/edit/{{ concert.id }}">
+    <div>
+        Artist: <input type="text" name="artist" placeholder="Artist" value="{{concert.artist}}">
+    </div>
+    <div>
+        Venue: <input type="text" name="venue" placeholder="Venue" value="{{concert.venue}}">
+    </div>
+    <div>
+        Location: <input type="text" name="location" placeholder="Location"value="{{concert.location}}">
+    </div>
+    <div>
+        Date: <input type="Date" name="date"placeholder="Date"value="{{concert.date}}">
+    </div>
+    <div>
+        Status: <input type="text" name="status"placeholder="Status"value="{{concert.status}}">
+    </div>
+
+    <input type="submit" value="Save Changes">
+</form>

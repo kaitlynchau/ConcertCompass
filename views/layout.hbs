@@ -13,15 +13,30 @@
 			<h1>Concert Compass</h1>
 		
 	</header>
+	{{!-- <div id="login" >
+		{{#if user}}
+			<form method="POST" action="/logout">
+				<input type="submit" value="Logout">
+			</form>
+		{{else}}
+			<form method="POST" action="/login">
+				<input type="text" name="username" placeholder="Username">
+				<input type="password" name="password" placeholder="Password">
+				<input type="submit" value="Login">
+			</form>
+		{{/if}}
+	</div> --}}
+
 	<nav>
 		<ul>
+			
 			<li><a href="/">All Concerts</a></li>
 			<li><a href="/concerts/add">Add Concert</a></li>
 		</ul>
 	</nav>
 	<div id="content">
 		{{{ body }}}
-	</div>
-</div>
+	</div> 
+
 </body>
 </html>

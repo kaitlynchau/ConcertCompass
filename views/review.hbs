@@ -6,6 +6,7 @@
         <th>Date</th>
         <th>Status</th>
         <th>Remove Entry</th>
+        <th>Edit Entry</th>
     </tr>
 
     {{#each class}}
@@ -19,6 +20,10 @@
                 <form action="/concerts/delete/{{this._id}}" method="POST">
                     <button type="submit">X</button>
                 </form>
+            </td>
+            <td>
+               <a href="/concerts/edit/{{this._id}}">Edit</a>
+               
             </td>
 
             
