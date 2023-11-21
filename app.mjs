@@ -24,25 +24,7 @@ app.set('view engine', 'hbs');
 app.use(express.urlencoded({ extended: false }));
 
 
-app.get('/concerts/edit/:id', (req, res) => {
-  const concertId = req.params.id;
-  
-  // Assuming your Concert model is named 'Concert' and you're using findById
-  Concert.findById(concertId)
-    .then((concert) => {
-      if (!concert) {
-        // Handle case where concert with provided ID is not found
-        res.send('Concert not found');
-        return;
-      }
-      
-      res.render('edit', { concert }); // Render the 'edit' view with the fetched concert data
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send('Internal Server Error');
-    });
-});
+
 
 app.get('/', (req, res) => {
   const query = req.query;
@@ -74,11 +56,6 @@ app.get('/concerts/add', (req, res) => {
 });
 
 
-
-
-
-
-
 app.post('/concerts/add', (req, res) => {
   const concert = new Concert({
     artist : req.body.artist,
@@ -99,6 +76,28 @@ app.post('/concerts/add', (req, res) => {
 
 });
 
+app.get('/concerts/edit/:id', (req, res) => {
+  const concertId = req.params.id;
+  
+  // Assuming your Concert model is named 'Concert' and you're using findById
+  Concert.findById(concertId)
+    .then((concert) => {
+      if (!concert) {
+        // Handle case where concert with provided ID is not found
+        res.send('Concert not found');
+        return;
+      }
+      
+      res.render('edit', { concert }); // Render the 'edit' view with the fetched concert data
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Internal Server Error');
+    });
+});
+
+
+
 
 
 app.post('/concerts/delete/:id', (req, res) => {
@@ -115,7 +114,7 @@ app.post('/concerts/delete/:id', (req, res) => {
     });
 });
 
-app.post('/edit/:id', (req, res) => {
+app.post('/concerts/edit/:id', (req, res) => {
   const concertId = req.params.id;
   const objectId = new mongoose.Types.ObjectId(concertId);
 
@@ -204,6 +203,6 @@ app.use('/', router);
 
 
 
-app.listen(process.env.PORT);
-// app.listen(3000);
+// app.listen(process.env.PORT || 3000);
+app.listen(3000);
 
