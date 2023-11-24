@@ -3,7 +3,7 @@ import express, { response } from 'express';
 const app = express();
 import './db.mjs';
 import mongoose from 'mongoose';
-const Concert = mongoose.model('Concert');
+const ConcertModel = mongoose.model('Concert');
 const VenueModel = mongoose.model('Venue');
 
 import url from 'url';
@@ -42,6 +42,28 @@ class Venue {
   }
 }
 
+class Concert {
+  constructor({artist, venue, location, date, status}){
+    this.artist = artist;
+    this.venue = venue;
+    this.location = location;
+    this.date = date;
+    this.status = status;
+    
+  }
+ 
+  async save(){
+    const concert = new ConcertModel({
+      artist: this.artist,
+      venue: this.venue,
+      location: this.location,
+      date: this.date,
+      status: this.status
+    });
+    await concert.save();
+  }
+}
+
 
 app.get('/', (req, res) => {
   const query = req.query;
@@ -52,7 +74,7 @@ app.get('/', (req, res) => {
     }
   });
 
-  Concert.find(query)
+  ConcertModel.find(query)
     .then((reviews) => {
       // You can get the count of the results directly from 'varToStoreResult.length'
       res.render('review', { class: reviews, count: res.locals.count });
@@ -78,7 +100,7 @@ app.post('/venues/delete/:id', (req, res) => {
   const venueID = req.params.id;
   const objectId = new mongoose.Types.ObjectId(venueID);
 
-  Venue.deleteOne({_id: objectId})
+  VenueModel.deleteOne({_id: objectId})
     .then(() => {
       res.redirect('/venues');
     })
@@ -105,6 +127,8 @@ app.post('/concerts/add', async (req, res) => {
     date: req.body.date,
     status: req.body.status
   });
+  
+
  
   
   try {
@@ -142,7 +166,7 @@ app.get('/concerts/edit/:id', (req, res) => {
   const concertId = req.params.id;
   
   // Assuming your Concert model is named 'Concert' and you're using findById
-  Concert.findById(concertId)
+  ConcertModel.findById(concertId)
     .then((concert) => {
       if (!concert) {
         // Handle case where concert with provided ID is not found
@@ -166,7 +190,7 @@ app.post('/concerts/delete/:id', (req, res) => {
   const concertId = req.params.id;
   const objectId = new mongoose.Types.ObjectId(concertId);
 
-  Concert.deleteOne({_id: objectId})
+  ConcertModel.deleteOne({_id: objectId})
     .then(() => {
       res.redirect('/');
     })
@@ -191,7 +215,7 @@ app.post('/concerts/edit/:id', (req, res) => {
   const concertId = req.params.id;
   const objectId = new mongoose.Types.ObjectId(concertId);
 
-  Concert.updateOne({_id: objectId}, {
+  ConcertModel.updateOne({_id: objectId}, {
     artist : req.body.artist,
     venue: req.body.venue,
     location: req.body.location,
