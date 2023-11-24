@@ -4,11 +4,10 @@ const app = express();
 import './db.mjs';
 import mongoose from 'mongoose';
 const Concert = mongoose.model('Concert');
-const Venue = mongoose.model('Venue');
+const VenueModel = mongoose.model('Venue');
 
 import url from 'url';
 import path from 'path';
-import axios from 'axios';
 import SpotifyWebApi from 'spotify-web-api-node';
 const router = express.Router();
 
@@ -23,7 +22,25 @@ app.set('view engine', 'hbs');
 // app.use(session(sessionOptions));
 app.use(express.urlencoded({ extended: false }));
 
-
+class Venue {
+  constructor({name, location}){
+    this.name = name;
+    this.location = location;
+    this.artists = [];
+  }
+  async addArtist(artist){
+    this.artists.push(artist);
+    await this.save();
+  }
+  async save(){
+    const venue = new VenueModel({
+      name: this.name,
+      location: this.location,
+      artists: this.artists
+    });
+    await venue.save();
+  }
+}
 
 
 app.get('/', (req, res) => {
@@ -47,7 +64,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/venues', (req, res) => {
-  Venue.find()
+  VenueModel.find()
     .then((venues) => {
       res.render('venue', {class: venues });
     })
@@ -89,23 +106,23 @@ app.post('/concerts/add', async (req, res) => {
     status: req.body.status
   });
  
-  const venue = new Venue({
-    name: req.body.venue,
-    location: req.body.location,
-    artists: []
-
-  })
+  
   try {
     // Check if the venue already exists in the database
-    const existingVenue =  await Venue.findOne({ name: req.body.venue });
+    const existingVenue =  await VenueModel.findOne({ name: req.body.venue });
     if (!existingVenue) {
       // If the venue doesn't exist, create a new entry
-      venue.artists.push(req.body.artist);
-      await venue.save();
+      const venue = new Venue({
+        name: req.body.venue,
+        location: req.body.location
+    
+      });
+      await venue.addArtist(req.body.artist);
+    
     } else {
       // If the venue already exists, add the artist to the list of artists
-      existingVenue.artists.push(req.body.artist);
-      await existingVenue.save();
+      const venueInstance = new Venue(existingVenue);
+      await venueInstance.addArtist(req.body.artist);
     }
 
     await concert.save()
