@@ -5,6 +5,7 @@ console.log(process.env.DSN);
 mongoose.connect(process.env.DSN);
 
 
+
 //Concert Schema
 
 const Concert = new mongoose.Schema({
@@ -16,11 +17,14 @@ const Concert = new mongoose.Schema({
 
 });
 
-const User = new mongoose.Schema({
-    username: String,
-    password: String,
-    concerts: Array
+
+const Venue = new mongoose.Schema( {
+    name: String,
+    location: String,
+    artists: [String]
 });
 
+
 mongoose.model('Concert', Concert);
-mongoose.model('User', User);
+
+mongoose.model('Venue', Venue);

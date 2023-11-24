@@ -1,0 +1,25 @@
+<table class = "center">
+    <tr>
+        <th>Venue Name</th>
+        <th>Location</th>
+        <th>Past Concerts</th>
+        <th>Remove Venue</th>
+
+    </tr>
+
+    {{#each class}}
+        <tr>
+            <td>{{name}}</td>
+            <td>{{location}}</td>
+            <td>{{artists}}</td>
+            <td>
+                <form action="/venues/delete/{{this._id}}" method="POST">
+                    <button type="submit">X</button>
+                </form>
+            </td>
+            
+        </tr>
+    {{/each}}
+   
+
+</table>

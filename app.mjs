@@ -4,7 +4,7 @@ const app = express();
 import './db.mjs';
 import mongoose from 'mongoose';
 const Concert = mongoose.model('Concert');
-const User = mongoose.model('User');
+const Venue = mongoose.model('Venue');
 
 import url from 'url';
 import path from 'path';
@@ -46,6 +46,30 @@ app.get('/', (req, res) => {
 
 });
 
+app.get('/venues', (req, res) => {
+  Venue.find()
+    .then((venues) => {
+      res.render('venue', {class: venues });
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+}
+);
+
+app.post('/venues/delete/:id', (req, res) => {
+  const venueID = req.params.id;
+  const objectId = new mongoose.Types.ObjectId(venueID);
+
+  Venue.deleteOne({_id: objectId})
+    .then(() => {
+      res.redirect('/venues');
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Internal Server Error');
+    });
+});
 
 
 
@@ -56,7 +80,7 @@ app.get('/concerts/add', (req, res) => {
 });
 
 
-app.post('/concerts/add', (req, res) => {
+app.post('/concerts/add', async (req, res) => {
   const concert = new Concert({
     artist : req.body.artist,
     venue: req.body.venue,
@@ -64,17 +88,38 @@ app.post('/concerts/add', (req, res) => {
     date: req.body.date,
     status: req.body.status
   });
+ 
+  const venue = new Venue({
+    name: req.body.venue,
+    location: req.body.location,
+    artists: []
 
+  })
+  try {
+    // Check if the venue already exists in the database
+    const existingVenue =  await Venue.findOne({ name: req.body.venue });
+    if (!existingVenue) {
+      // If the venue doesn't exist, create a new entry
+      venue.artists.push(req.body.artist);
+      await venue.save();
+    } else {
+      // If the venue already exists, add the artist to the list of artists
+      existingVenue.artists.push(req.body.artist);
+      await existingVenue.save();
+    }
 
-  concert.save() 
-    .then(() => {
-      res.redirect('/');
-    })
-    .catch((err) => {
-      console.error(err);
-    });
+    await concert.save()
+    res.redirect('/');
+
+ 
+  } catch (err){
+    res.status(500).send('Error adding concert');
+    console.log(err);
+
+  }
 
 });
+
 
 app.get('/concerts/edit/:id', (req, res) => {
   const concertId = req.params.id;
@@ -112,6 +157,17 @@ app.post('/concerts/delete/:id', (req, res) => {
       console.error(err);
       res.status(500).send('Internal Server Error');
     });
+  
+  // Venue.find({venue: req.params.venue})
+  //   .then((venue) => {
+  //     if (!venue) {
+  //       // Handle case where concert with provided ID is not found
+  //       res.send('Venue not found');
+  //       return;
+  //     }
+  //     venue.save();
+  //     res.redirect('/');
+  //   })
 });
 
 app.post('/concerts/edit/:id', (req, res) => {
@@ -133,6 +189,10 @@ app.post('/concerts/edit/:id', (req, res) => {
       res.status(500).send('Internal Server Error');
     });
 });
+
+
+
+
 
 
 
@@ -203,6 +263,6 @@ app.use('/', router);
 
 
 
-app.listen(process.env.PORT || 3000);
-// app.listen(3000);
+// app.listen(process.env.PORT || 3000);
+app.listen(3000);
 
