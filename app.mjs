@@ -1,5 +1,5 @@
 import './config.mjs';
-import express, { response } from 'express';
+import express from 'express';
 const app = express();
 import './db.mjs';
 import mongoose from 'mongoose';
@@ -133,7 +133,7 @@ app.post('/concerts/add', async (req, res) => {
   
   try {
     // Check if the venue already exists in the database
-    const existingVenue =  await VenueModel.findOne({ name: req.body.venue });
+    const existingVenue = await VenueModel.findOne({ name: req.body.venue });
     if (!existingVenue) {
       // If the venue doesn't exist, create a new entry
       const venue = new Venue({
@@ -149,7 +149,7 @@ app.post('/concerts/add', async (req, res) => {
       await venueInstance.addArtist(req.body.artist);
     }
 
-    await concert.save()
+    await concert.save();
     res.redirect('/');
 
  
@@ -199,16 +199,6 @@ app.post('/concerts/delete/:id', (req, res) => {
       res.status(500).send('Internal Server Error');
     });
   
-  // Venue.find({venue: req.params.venue})
-  //   .then((venue) => {
-  //     if (!venue) {
-  //       // Handle case where concert with provided ID is not found
-  //       res.send('Venue not found');
-  //       return;
-  //     }
-  //     venue.save();
-  //     res.redirect('/');
-  //   })
 });
 
 app.post('/concerts/edit/:id', (req, res) => {
@@ -237,15 +227,15 @@ app.post('/concerts/edit/:id', (req, res) => {
 
 
 
-let token =process.env.SPOTIFY_TOKEN;
+const token =process.env.SPOTIFY_TOKEN;
 
-var spotifyApi = new SpotifyWebApi({
+const spotifyApi = new SpotifyWebApi({
   clientId: process.env.SPOTIFY_CLIENT_ID,
   clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
   redirectUri: 'http://localhost:3000/callback'
 });
 
-router.get('/', (req,res,next)=> {
+router.get('/', (req,res)=> {
   res.redirect(spotifyApi.createAuthorizeURL([
     "ugc-image-upload",
     "user-read-recently-played",
@@ -271,19 +261,17 @@ router.get('/', (req,res,next)=> {
 
 });
 
-router.get('/callback', (req,res,next)=> {
+router.get('/callback', (req,res)=> {
   console.log('reqquery', req.query);
-  const code=  req.query.code
+  // const code = req.query.code;
   // console.log('code', code);
   // res.send(JSON.stringify(req.query));
   spotifyApi.authorizationCodeGrant(req.query.code).then((response) => {
-    res.send(JSON.stringify(response))
+    res.send(JSON.stringify(response));
     
-    
-    
-  })
+  });
 
-})
+});
 spotifyApi.setAccessToken(token);
 
 
@@ -296,7 +284,7 @@ const getMe = () => {
 
           console.log('Something went wrong!', err);
       });
-}
+};
 
 getMe();
 
@@ -304,6 +292,6 @@ app.use('/', router);
 
 
 
-// app.listen(process.env.PORT || 3000);
-app.listen(3000);
+app.listen(process.env.PORT || 3000);
+// app.listen(3000);
 

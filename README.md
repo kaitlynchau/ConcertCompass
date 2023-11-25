@@ -17,13 +17,13 @@ The application will store Users and Concert Log.
 * each concert can be attended by many users (many-many concert-user)
 
 
-An Example User:
+An Example Venue:
 
 ```javascript
 {
-  username: "tameImpalaLover2010",
-  password: // a password hashed and salted,
-  concerts: // an array of references to List documents
+  name: "Terminal 5",
+  location: "New York, New York"
+  artists: // an array of references to List documents
 }
 
 ```
@@ -75,6 +75,8 @@ An Example Concert:
     * Integrate ESLint into my workflow, which is a code analysis tool to check Javascript code for format, syntax and code style violations. This helps ensure that my code is readable and clean.
 * (6 points) Spotify API
    * Use Spotify API to gather information about concert artists and data from the user.
+* (3 points) Build Tools : Makefile
+   * Used Makefile to automate linting and compilation process.
 11 points total out of 10 required points 
 
 
