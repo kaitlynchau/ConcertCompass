@@ -1,2 +1,2 @@
 lint:
-	npx eslint final-project-kaitlynchau/*.mjs
+	npx eslint *.mjs

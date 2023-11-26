@@ -66,6 +66,9 @@ class Concert {
 
 
 app.get('/', (req, res) => {
+  console.log('here')
+  console.log(mongoose.connection.readyState);
+
   const query = req.query;
 
   Object.keys(query).forEach(quer => {
@@ -73,7 +76,7 @@ app.get('/', (req, res) => {
          delete query[quer];
     }
   });
-
+  
   ConcertModel.find(query)
     .then((reviews) => {
       // You can get the count of the results directly from 'varToStoreResult.length'
@@ -82,7 +85,8 @@ app.get('/', (req, res) => {
     .catch((err) => {
       console.error(err);
     });
-
+    
+   return 'hello'
 });
 
 app.get('/venues', (req, res) => {
@@ -227,71 +231,69 @@ app.post('/concerts/edit/:id', (req, res) => {
 
 
 
-const token =process.env.SPOTIFY_TOKEN;
+// const token =process.env.SPOTIFY_TOKEN;
 
-const spotifyApi = new SpotifyWebApi({
-  clientId: process.env.SPOTIFY_CLIENT_ID,
-  clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
-  redirectUri: 'http://localhost:3000/callback'
-});
+// const spotifyApi = new SpotifyWebApi({
+//   clientId: process.env.SPOTIFY_CLIENT_ID,
+//   clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+//   redirectUri: 'http://localhost:3000/callback'
+// });
 
-router.get('/', (req,res)=> {
-  res.redirect(spotifyApi.createAuthorizeURL([
-    "ugc-image-upload",
-    "user-read-recently-played",
-    "user-read-playback-state",
-    "user-top-read",
-    "app-remote-control",
-    "playlist-modify-public",
-    "user-modify-playback-state",
-    "playlist-modify-private",
-    "user-follow-modify",
-    "user-read-currently-playing",
-    "user-follow-read",
-    "user-library-modify",
-    "user-read-playback-position",
-    "playlist-read-private",
-    "user-read-email",
-    "user-read-private",
-    "user-library-read",
-    "playlist-read-collaborative",
-    "streaming"
-  ]));
+// router.get('/', (req,res)=> {
+//   res.redirect(spotifyApi.createAuthorizeURL([
+//     "ugc-image-upload",
+//     "user-read-recently-played",
+//     "user-read-playback-state",
+//     "user-top-read",
+//     "app-remote-control",
+//     "playlist-modify-public",
+//     "user-modify-playback-state",
+//     "playlist-modify-private",
+//     "user-follow-modify",
+//     "user-read-currently-playing",
+//     "user-follow-read",
+//     "user-library-modify",
+//     "user-read-playback-position",
+//     "playlist-read-private",
+//     "user-read-email",
+//     "user-read-private",
+//     "user-library-read",
+//     "playlist-read-collaborative",
+//     "streaming"
+//   ]));
   
 
-});
+// });
 
-router.get('/callback', (req,res)=> {
-  console.log('reqquery', req.query);
-  // const code = req.query.code;
-  // console.log('code', code);
-  // res.send(JSON.stringify(req.query));
-  spotifyApi.authorizationCodeGrant(req.query.code).then((response) => {
-    res.send(JSON.stringify(response));
+// router.get('/callback', (req,res)=> {
+//   console.log('reqquery', req.query);
+//   // const code = req.query.code;
+//   // console.log('code', code);
+//   // res.send(JSON.stringify(req.query));
+//   spotifyApi.authorizationCodeGrant(req.query.code).then((response) => {
+//     res.send(JSON.stringify(response));
     
-  });
+//   });
 
-});
-spotifyApi.setAccessToken(token);
+// });
+// spotifyApi.setAccessToken(token);
 
 
-const getMe = () => {
-  spotifyApi.getMe()
-      .then(function (data) {
-          console.log('Some information about the authenticated user', data.body);
-      }, function (err) {
-          // console.log('token',token);
+// const getMe = () => {
+//   spotifyApi.getMe()
+//       .then(function (data) {
+//           console.log('Some information about the authenticated user', data.body);
+//       }, function (err) {
+//           // console.log('token',token);
 
-          console.log('Something went wrong!', err);
-      });
-};
+//           console.log('Something went wrong!', err);
+//       });
+// };
 
-getMe();
+// getMe();
 
 app.use('/', router);
 
-
-
-app.listen(process.env.PORT || 3000);
-// app.listen(3000);
+// app.listen(process.env.PORT || 3000);
+app.listen(3000);
 

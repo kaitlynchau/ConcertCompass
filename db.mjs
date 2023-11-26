@@ -1,10 +1,11 @@
 // add your code here!
 import mongoose from 'mongoose';
 // Uncomment following line to debug value of database connectoin string
+
 console.log(process.env.DSN);
-mongoose.connect(process.env.DSN);
-
-
+console.log('trying to connect')
+await mongoose.connect(process.env.DSN);
+console.log('connected')
 
 //Concert Schema
 
@@ -23,7 +24,6 @@ const Venue = new mongoose.Schema( {
     location: String,
     artists: [String]
 });
-
 
 mongoose.model('Concert', Concert);
 
