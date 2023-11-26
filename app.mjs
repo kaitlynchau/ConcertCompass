@@ -22,35 +22,58 @@ app.set('view engine', 'hbs');
 // app.use(session(sessionOptions));
 app.use(express.urlencoded({ extended: false }));
 
-class TokenManager {
-  constructor(spotifyApi) {
-    this.spotifyApi = spotifyApi;
-  }
+// function get_access_token(res){
+//   console.log('calling getaccess token')
+//   try {
+//     const data = spotifyApi.refreshAccessToken();
+//     data.then((data) => {
+//       console.log('The access token expires in ' + data.body['expires_in']);
+//       console.log('The access token is ' + data.body['access_token']);
+//       console.log('The refresh token is ' + data.body['refresh_token']);
+//       spotifyApi.setAccessToken(data.body['access_token']);
+//       spotifyApi.setRefreshToken(data.body['refresh_token']);
+//       return true;
+//     });
+//   } catch (err) {
+//     console.log('erred')
+//     console.error('Error getting access token:', err);
+//     return false;
+//   }
+//   console.log('completed')
+// }
 
-  refresh_token() {
-    spotifyApi.clientCredentialsGrant()
-          .then(data => {
-            spotifyApi.setAccessToken(data.body.access_token);
-          })
-          .catch(err => {
-            console.error('Error getting access token:', err);
-          })
-  };
-  
-
-  checkResponse(response, request, n) {
-    if (n == 10) {
-      return false;
-    }
-    // if the response says u have invalid token...
-    // redo request
-    if (expired_token(response) {
-      refresh_token();
-      // request a new token
-      checkResponse(request);
-    }
-  }
+function get_access_token() {
+  console.log('calling get_access_token');
+  return new Promise((resolve, reject) => {
+    spotifyApi.refreshAccessToken()
+      .then(data => {
+        console.log('The access token expires in ' + data.body['expires_in']);
+        console.log('The access token is ' + data.body['access_token']);
+        console.log('The refresh token is ' + data.body['refresh_token']);
+        spotifyApi.setAccessToken(data.body['access_token']);
+        spotifyApi.setRefreshToken(data.body['refresh_token']);
+        resolve(true); // Resolve the promise indicating success
+      })
+      .catch(err => {
+        console.error('Error getting access token:', err);
+        reject(false); // Reject the promise indicating failure
+      });
+  });
 }
+
+
+function checkResponse(res, req, next) {
+  console.log('res.body', res.body);
+  if (res.body.error.status === 401) {
+    console.log('Access token expired. Refreshing...');
+    get_access_token(spotifyApi);
+    next();
+  } 
+
+}
+
+
+
 
 class Venue {
   constructor({name, location}){
@@ -94,7 +117,7 @@ class Concert {
   }
 }
 
-
+/*
 app.get('/', (req, res) => {
   console.log('here')
   console.log(mongoose.connection.readyState);
@@ -117,7 +140,7 @@ app.get('/', (req, res) => {
     });
     
    return 'hello'
-});
+});*/
 
 app.get('/venues', (req, res) => {
   VenueModel.find()
@@ -255,75 +278,77 @@ app.post('/concerts/edit/:id', (req, res) => {
     });
 });
 
+const spotifyApi = new SpotifyWebApi({
+  clientId: process.env.SPOTIFY_CLIENT_ID,
+  clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+  redirectUri: 'http://localhost:3000/callback'
+});
 
 
 
+router.get('/', (req,res)=> {
+  res.redirect(spotifyApi.createAuthorizeURL([
+    "ugc-image-upload",
+    "user-read-recently-played",
+    "user-read-playback-state",
+    "user-top-read",
+    "app-remote-control",
+    "playlist-modify-public",
+    "user-modify-playback-state",
+    "playlist-modify-private",
+    "user-follow-modify",
+    "user-read-currently-playing",
+    "user-follow-read",
+    "user-library-modify",
+    "user-read-playback-position",
+    "playlist-read-private",
+    "user-read-email",
+    "user-read-private",
+    "user-library-read",
+    "playlist-read-collaborative",
+    "streaming"
+  ]));
+});
 
-
-
-// const token =process.env.SPOTIFY_TOKEN;
-
-// const spotifyApi = new SpotifyWebApi({
-//   clientId: process.env.SPOTIFY_CLIENT_ID,
-//   clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
-//   redirectUri: 'http://localhost:3000/callback'
-// });
-
-// router.get('/', (req,res)=> {
-//   res.redirect(spotifyApi.createAuthorizeURL([
-//     "ugc-image-upload",
-//     "user-read-recently-played",
-//     "user-read-playback-state",
-//     "user-top-read",
-//     "app-remote-control",
-//     "playlist-modify-public",
-//     "user-modify-playback-state",
-//     "playlist-modify-private",
-//     "user-follow-modify",
-//     "user-read-currently-playing",
-//     "user-follow-read",
-//     "user-library-modify",
-//     "user-read-playback-position",
-//     "playlist-read-private",
-//     "user-read-email",
-//     "user-read-private",
-//     "user-library-read",
-//     "playlist-read-collaborative",
-//     "streaming"
-//   ]));
+router.get('/callback', (req,res)=> {
+  console.log('reqquery', req.query);
+  // const code = req.query.code;
+  // console.log('code', code);
+  // res.send(JSON.stringify(req.query));
+  // get_access_token(res);
+  // spotifyApi.setRefreshToken(req.query.code);
+ //getMe();
   
+  spotifyApi.authorizationCodeGrant(req.query.code).then((response) => {
+    console.log(response.body)
+    spotifyApi.setAccessToken(response.body['access_token']);
+    getMe();
+    res.send('success')
+  });
 
-// });
+});
 
-// router.get('/callback', (req,res)=> {
-//   console.log('reqquery', req.query);
-//   // const code = req.query.code;
-//   // console.log('code', code);
-//   // res.send(JSON.stringify(req.query));
-//   spotifyApi.authorizationCodeGrant(req.query.code).then((response) => {
-//     res.send(JSON.stringify(response));
-    
-//   });
+// get_access_token(spotifyApi);
 
-// });
-// spotifyApi.setAccessToken(token);
+// checkResponse(spotifyApi);
 
 
-// const getMe = () => {
-//   spotifyApi.getMe()
-//       .then(function (data) {
-//           console.log('Some information about the authenticated user', data.body);
-//       }, function (err) {
-//           // console.log('token',token);
+const getMe = () => {
+  console.log('calling get me')
+  spotifyApi.getMe()
+      .then(function (data) {
+          console.log('Some information about the authenticated user', data.body);
+      }, function (err) {
+          console.log('Something went wrong! Get me', err);
+          get_access_token(spotifyApi);
+          getMe();
+      });
+};
 
-//           console.log('Something went wrong!', err);
-//       });
-// };
-
-// getMe();
+//getMe();
 
 app.use('/', router);
 
-app.listen(process.env.PORT || 3000);
-//app.listen(3000);
+// app.listen(process.env.PORT || 3000);
+app.listen(3000);
 
