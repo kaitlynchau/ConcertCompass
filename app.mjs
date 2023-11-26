@@ -22,6 +22,36 @@ app.set('view engine', 'hbs');
 // app.use(session(sessionOptions));
 app.use(express.urlencoded({ extended: false }));
 
+class TokenManager {
+  constructor(spotifyApi) {
+    this.spotifyApi = spotifyApi;
+  }
+
+  refresh_token() {
+    spotifyApi.clientCredentialsGrant()
+          .then(data => {
+            spotifyApi.setAccessToken(data.body.access_token);
+          })
+          .catch(err => {
+            console.error('Error getting access token:', err);
+          })
+  };
+  
+
+  checkResponse(response, request, n) {
+    if (n == 10) {
+      return false;
+    }
+    // if the response says u have invalid token...
+    // redo request
+    if (expired_token(response) {
+      refresh_token();
+      // request a new token
+      checkResponse(request);
+    }
+  }
+}
+
 class Venue {
   constructor({name, location}){
     this.name = name;
@@ -294,6 +324,6 @@ app.post('/concerts/edit/:id', (req, res) => {
 
 app.use('/', router);
 
-// app.listen(process.env.PORT || 3000);
-app.listen(3000);
+app.listen(process.env.PORT || 3000);
+//app.listen(3000);
 
