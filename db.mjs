@@ -3,9 +3,9 @@ import mongoose from 'mongoose';
 // Uncomment following line to debug value of database connectoin string
 
 console.log(process.env.DSN);
-console.log('trying to connect')
+console.log('trying to connect');
 await mongoose.connect(process.env.DSN);
-console.log('connected')
+console.log('connected');
 
 //Concert Schema
 

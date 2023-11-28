@@ -11,19 +11,23 @@ import path from 'path';
 import SpotifyWebApi from 'spotify-web-api-node';
 const router = express.Router();
 
-
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // configure templating to hbs
 app.set('view engine', 'hbs');
 
-
 // app.use(session(sessionOptions));
 app.use(express.urlencoded({ extended: false }));
 
-function get_access_token() {
-  console.log('calling get_access_token');
+const spotifyApi = new SpotifyWebApi({
+  clientId: process.env.SPOTIFY_CLIENT_ID,
+  clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+  redirectUri: 'http://localhost:3000/callback'
+});
+
+function getAccessToken() {
+  console.log('calling getAccessToken');
   return new Promise((resolve, reject) => {
     spotifyApi.refreshAccessToken()
       .then(data => {
@@ -41,9 +45,21 @@ function get_access_token() {
   });
 }
 
-
-
-
+const getMe = () => {
+  console.log('calling get me');
+  spotifyApi.getMe()
+      .then(function (data) {
+          console.log('Some information about the authenticated user', data.body);
+          console.log('welcome, ' + data.body.display_name);
+          return data.body;
+      }, function (err) {
+          console.log('Something went wrong! Get me', err);
+          getAccessToken(spotifyApi);
+          getMe();
+          
+       
+      });
+};
 
 class Venue {
   constructor({name, location}){
@@ -89,7 +105,6 @@ class Concert {
 
 
 app.get('/home', (req, res) => {
-  console.log('here')
   console.log(mongoose.connection.readyState);
 
   const query = req.query;
@@ -208,10 +223,6 @@ app.get('/concerts/edit/:id', (req, res) => {
     });
 });
 
-
-
-
-
 app.post('/concerts/delete/:id', (req, res) => {
   const concertId = req.params.id;
   const objectId = new mongoose.Types.ObjectId(concertId);
@@ -247,12 +258,6 @@ app.post('/concerts/edit/:id', (req, res) => {
     });
 });
 
-const spotifyApi = new SpotifyWebApi({
-  clientId: process.env.SPOTIFY_CLIENT_ID,
-  clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
-  redirectUri: 'http://localhost:3000/callback'
-});
-
 
 
 router.get('/', (req,res)=> {
@@ -279,48 +284,21 @@ router.get('/', (req,res)=> {
   ]));
 });
 
+
+
 router.get('/callback', (req,res)=> {
   console.log('reqquery', req.query);
-  // const code = req.query.code;
-  // console.log('code', code);
-  // res.send(JSON.stringify(req.query));
-  // get_access_token(res);
-  // spotifyApi.setRefreshToken(req.query.code);
-  // getMe();
   
   spotifyApi.authorizationCodeGrant(req.query.code).then((response) => {
-    console.log(response.body)
+    console.log(response.body);
     spotifyApi.setAccessToken(response.body['access_token']);
+    //returns user's spotify data back to console
     getMe();
-
     
     res.redirect('/home');
   });
 
 });
-
-// get_access_token(spotifyApi);
-
-// checkResponse(spotifyApi);
-
-
-const getMe = () => {
-  console.log('calling get me')
-  spotifyApi.getMe()
-      .then(function (data) {
-          console.log('Some information about the authenticated user', data.body);
-          console.log('welcome, ' + data.body.display_name);
-          return data.body;
-      }, function (err) {
-          console.log('Something went wrong! Get me', err);
-          get_access_token(spotifyApi);
-          getMe();
-          
-       
-      });
-};
-
-// getMe();
 
 app.use('/', router);
 
