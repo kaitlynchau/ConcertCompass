@@ -22,26 +22,6 @@ app.set('view engine', 'hbs');
 // app.use(session(sessionOptions));
 app.use(express.urlencoded({ extended: false }));
 
-// function get_access_token(res){
-//   console.log('calling getaccess token')
-//   try {
-//     const data = spotifyApi.refreshAccessToken();
-//     data.then((data) => {
-//       console.log('The access token expires in ' + data.body['expires_in']);
-//       console.log('The access token is ' + data.body['access_token']);
-//       console.log('The refresh token is ' + data.body['refresh_token']);
-//       spotifyApi.setAccessToken(data.body['access_token']);
-//       spotifyApi.setRefreshToken(data.body['refresh_token']);
-//       return true;
-//     });
-//   } catch (err) {
-//     console.log('erred')
-//     console.error('Error getting access token:', err);
-//     return false;
-//   }
-//   console.log('completed')
-// }
-
 function get_access_token() {
   console.log('calling get_access_token');
   return new Promise((resolve, reject) => {
@@ -61,16 +41,6 @@ function get_access_token() {
   });
 }
 
-
-function checkResponse(res, req, next) {
-  console.log('res.body', res.body);
-  if (res.body.error.status === 401) {
-    console.log('Access token expired. Refreshing...');
-    get_access_token(spotifyApi);
-    next();
-  } 
-
-}
 
 
 
@@ -117,8 +87,8 @@ class Concert {
   }
 }
 
-/*
-app.get('/', (req, res) => {
+
+app.get('/home', (req, res) => {
   console.log('here')
   console.log(mongoose.connection.readyState);
 
@@ -139,8 +109,7 @@ app.get('/', (req, res) => {
       console.error(err);
     });
     
-   return 'hello'
-});*/
+});
 
 app.get('/venues', (req, res) => {
   VenueModel.find()
@@ -207,7 +176,7 @@ app.post('/concerts/add', async (req, res) => {
     }
 
     await concert.save();
-    res.redirect('/');
+    res.redirect('/home');
 
  
   } catch (err){
@@ -249,7 +218,7 @@ app.post('/concerts/delete/:id', (req, res) => {
 
   ConcertModel.deleteOne({_id: objectId})
     .then(() => {
-      res.redirect('/');
+      res.redirect('/home');
     })
     .catch((err) => {
       console.error(err);
@@ -270,7 +239,7 @@ app.post('/concerts/edit/:id', (req, res) => {
     status: req.body.status
   })
     .then(() => {
-      res.redirect('/');
+      res.redirect('/home');
     })
     .catch((err) => {
       console.error(err);
@@ -317,13 +286,15 @@ router.get('/callback', (req,res)=> {
   // res.send(JSON.stringify(req.query));
   // get_access_token(res);
   // spotifyApi.setRefreshToken(req.query.code);
- //getMe();
+  // getMe();
   
   spotifyApi.authorizationCodeGrant(req.query.code).then((response) => {
     console.log(response.body)
     spotifyApi.setAccessToken(response.body['access_token']);
     getMe();
-    res.send('success')
+
+    
+    res.redirect('/home');
   });
 
 });
@@ -338,14 +309,18 @@ const getMe = () => {
   spotifyApi.getMe()
       .then(function (data) {
           console.log('Some information about the authenticated user', data.body);
+          console.log('welcome, ' + data.body.display_name);
+          return data.body;
       }, function (err) {
           console.log('Something went wrong! Get me', err);
           get_access_token(spotifyApi);
           getMe();
+          
+       
       });
 };
 
-//getMe();
+// getMe();
 
 app.use('/', router);
 
