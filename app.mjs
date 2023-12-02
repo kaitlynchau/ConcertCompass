@@ -10,6 +10,7 @@ import url from 'url';
 import path from 'path';
 import SpotifyWebApi from 'spotify-web-api-node';
 const router = express.Router();
+let dataBody = {};
 
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -47,18 +48,18 @@ function getAccessToken() {
 
 const getMe = () => {
   console.log('calling get me');
-  spotifyApi.getMe()
-      .then(function (data) {
-          console.log('Some information about the authenticated user', data.body);
-          console.log('welcome, ' + data.body.display_name);
-          return data.body;
-      }, function (err) {
-          console.log('Something went wrong! Get me', err);
-          getAccessToken(spotifyApi);
-          getMe();
-          
-       
-      });
+  return spotifyApi.getMe()
+    .then((data) => {
+      console.log('Some information about the authenticated user', data.body);
+      console.log('welcome, ' + data.body.display_name);
+      dataBody = data.body;
+      return data.body;
+    })
+    .catch((err) => {
+      console.log('Something went wrong! Get me', err);
+      return getAccessToken(spotifyApi)
+        .then(() => getMe()); // Recursive call to getMe after refreshing access token
+    });
 };
 
 class Venue {
@@ -104,7 +105,7 @@ class Concert {
 }
 
 
-app.get('/home', (req, res) => {
+app.get('/home', async (req, res) => {
   console.log(mongoose.connection.readyState);
 
   const query = req.query;
@@ -116,15 +117,56 @@ app.get('/home', (req, res) => {
   });
   
   ConcertModel.find(query)
-    .then((reviews) => {
+    .then(async (reviews) => {
       // You can get the count of the results directly from 'varToStoreResult.length'
-      res.render('review', { class: reviews, count: res.locals.count });
+     
+      try {
+        console.log("HOME GET ME START")
+        const userData =  await getMe( );
+
+        console.log("HOME GET ME end")
+        console.log('userdata', dataBody);
+  
+        res.render('review', {user: userData , class: reviews, count: res.locals.count});
+      }
+      catch (err) {
+        console.log('error', err);
+      }
     })
     .catch((err) => {
       console.error(err);
     });
+
     
 });
+
+
+// app.get('/home', async (req, res) => {
+//   console.log(mongoose.connection.readyState);
+
+//   const query = req.query;
+
+//   Object.keys(query).forEach(quer => {
+//     if (query[quer] === '') {
+//       delete query[quer];
+//     }
+//   });
+
+//   try {
+//     console.log("HOME GET ME START");
+//     await getMe(); // Wait for getMe() to resolve before rendering
+//     console.log("HOME GET ME end");
+//     console.log('userdata', dataBody);
+
+//     const reviews = await ConcertModel.f
+//     ind(query);
+//     res.render('review', { user: spotifyApi, class: reviews, count: res.locals.count });
+//   } catch (err) {
+//     console.log('error', err);
+//     res.status(500).send('Internal Server Error');
+//   }
+// });
+
 
 app.get('/venues', (req, res) => {
   VenueModel.find()
@@ -287,7 +329,6 @@ router.get('/', (req,res)=> {
 
 
 router.get('/callback', (req,res)=> {
-  console.log('reqquery', req.query);
   
   spotifyApi.authorizationCodeGrant(req.query.code).then((response) => {
     console.log(response.body);
