@@ -11,6 +11,7 @@ import path from 'path';
 import SpotifyWebApi from 'spotify-web-api-node';
 const router = express.Router();
 let dataBody = {};
+let topArtist = {};
 
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -25,16 +26,17 @@ const spotifyApi = new SpotifyWebApi({
   clientId: process.env.SPOTIFY_CLIENT_ID,
   clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
   redirectUri: 'http://localhost:3000/callback'
+  // redirectUri: 'http://linserv1.cims.nyu.edu:15271/callback'
 });
 
 function getAccessToken() {
-  console.log('calling getAccessToken');
+  // console.log('calling getAccessToken');
   return new Promise((resolve, reject) => {
     spotifyApi.refreshAccessToken()
       .then(data => {
-        console.log('The access token expires in ' + data.body['expires_in']);
-        console.log('The access token is ' + data.body['access_token']);
-        console.log('The refresh token is ' + data.body['refresh_token']);
+        // console.log('The access token expires in ' + data.body['expires_in']);
+        // console.log('The access token is ' + data.body['access_token']);
+        // console.log('The refresh token is ' + data.body['refresh_token']);
         spotifyApi.setAccessToken(data.body['access_token']);
         spotifyApi.setRefreshToken(data.body['refresh_token']);
         resolve(true); // Resolve the promise indicating success
@@ -50,7 +52,8 @@ const getMe = () => {
   console.log('calling get me');
   return spotifyApi.getMe()
     .then((data) => {
-      console.log('Some information about the authenticated user', data.body);
+      // console.log('Some information about the authenticated user', data.body);
+      
       dataBody = data.body;
       return data.body;
     })
@@ -60,6 +63,24 @@ const getMe = () => {
         .then(() => getMe()); // Recursive call to getMe after refreshing access token
     });
 };
+
+const topArtists = () => {
+  // console.log('calling top artists');
+  return spotifyApi.getMyTopArtists()
+    .then((data) => {
+      
+      // console.log('Top artists', data.body);
+      topArtist = data.body;
+
+      return data.body;
+    })
+    .catch((err) => {
+      console.log('Something went wrong! Top artists', err);
+      return getAccessToken(spotifyApi)
+        .then(() => topArtists()); // Recursive call to topArtists after refreshing access token
+    });
+}
+
 
 
 class Venue {
@@ -119,11 +140,16 @@ app.get('/home', async (req, res) => {
   ConcertModel.find(query)
     .then(async (reviews) => {
       try {
-        const userData =  await getMe( );
+        await getMe();
+        await topArtists();
+        // console.log('HERE IS TOP ARTIST DATA', topArtistsData);
 
-        console.log('userdata', dataBody);
+
+        // console.log('LENGTH', topArtistsData.items.length);
+        // console.log('THIS IS THE TOP ARTIST ARTIST ARTIST', topArtistsData.items[0].name);
+
   
-        res.render('review', {user: userData , class: reviews, count: res.locals.count});
+        res.render('review', {user: dataBody , artist: topArtist, class: reviews, count: res.locals.count});
       }
       catch (err) {
         console.log('error', err);
@@ -138,7 +164,7 @@ app.get('/home', async (req, res) => {
 app.get('/venues', (req, res) => {
   VenueModel.find()
     .then((venues) => {
-      res.render('venue', {class: venues });
+      res.render('venue', {user: dataBody, artist: topArtist, class: venues });
     })
     .catch((err) => {
       console.error(err);
@@ -164,7 +190,7 @@ app.post('/venues/delete/:id', (req, res) => {
 
 //render form to add new tasks
 app.get('/concerts/add', (req, res) => {
-  res.render('add', {count: res.locals.count});
+  res.render('add', {user: dataBody, artist: topArtist, count: res.locals.count});
 
 });
 
@@ -297,7 +323,7 @@ router.get('/', (req,res)=> {
 router.get('/callback', (req,res)=> {
   
   spotifyApi.authorizationCodeGrant(req.query.code).then((response) => {
-    console.log(response.body);
+    // console.log(response.body);
     spotifyApi.setAccessToken(response.body['access_token']);
     //returns user's spotify data back to console
     getMe();
@@ -309,6 +335,6 @@ router.get('/callback', (req,res)=> {
 
 app.use('/', router);
 
-app.listen(process.env.PORT || 3000);
-// app.listen(3000);
+// app.listen(process.env.PORT || 3000);
+app.listen(3000);
 

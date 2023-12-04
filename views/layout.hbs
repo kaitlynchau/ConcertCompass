@@ -26,7 +26,40 @@
 	</nav>
 	<div id="content">
 		{{{ body }}}
+
 	</div> 
+
+	<div>
+		
+		<p>
+			Your Top Artists:
+		</p>
+		<ul>
+			{{#each artist.items}}
+				<li>{{name}}</li>
+			{{/each}}
+		</ul>
+		{{!-- {{#each artist}}
+        <tr>
+            <td>{{artist}}</td>
+            <td>{{venue}}</td>
+            <td>{{location}}</td>
+            <td>{{date}}</td>
+            <td>{{status}}</td>
+            <td>
+                <form action="/concerts/delete/{{this._id}}" method="POST">
+                    <button type="submit">X</button>
+                </form>
+            </td>
+            <td>
+               <a href="/concerts/edit/{{this._id}}">Edit</a>
+               
+            </td>
+
+            
+        </tr>
+    {{/each}} --}}
+	</div>
 
 </body>
 </html>
