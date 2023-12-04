@@ -51,7 +51,6 @@ const getMe = () => {
   return spotifyApi.getMe()
     .then((data) => {
       console.log('Some information about the authenticated user', data.body);
-      console.log('welcome, ' + data.body.display_name);
       dataBody = data.body;
       return data.body;
     })
@@ -61,6 +60,7 @@ const getMe = () => {
         .then(() => getMe()); // Recursive call to getMe after refreshing access token
     });
 };
+
 
 class Venue {
   constructor({name, location}){
@@ -118,13 +118,9 @@ app.get('/home', async (req, res) => {
   
   ConcertModel.find(query)
     .then(async (reviews) => {
-      // You can get the count of the results directly from 'varToStoreResult.length'
-     
       try {
-        console.log("HOME GET ME START")
         const userData =  await getMe( );
 
-        console.log("HOME GET ME end")
         console.log('userdata', dataBody);
   
         res.render('review', {user: userData , class: reviews, count: res.locals.count});
@@ -136,36 +132,7 @@ app.get('/home', async (req, res) => {
     .catch((err) => {
       console.error(err);
     });
-
-    
 });
-
-
-// app.get('/home', async (req, res) => {
-//   console.log(mongoose.connection.readyState);
-
-//   const query = req.query;
-
-//   Object.keys(query).forEach(quer => {
-//     if (query[quer] === '') {
-//       delete query[quer];
-//     }
-//   });
-
-//   try {
-//     console.log("HOME GET ME START");
-//     await getMe(); // Wait for getMe() to resolve before rendering
-//     console.log("HOME GET ME end");
-//     console.log('userdata', dataBody);
-
-//     const reviews = await ConcertModel.f
-//     ind(query);
-//     res.render('review', { user: spotifyApi, class: reviews, count: res.locals.count });
-//   } catch (err) {
-//     console.log('error', err);
-//     res.status(500).send('Internal Server Error');
-//   }
-// });
 
 
 app.get('/venues', (req, res) => {
@@ -210,9 +177,6 @@ app.post('/concerts/add', async (req, res) => {
     date: req.body.date,
     status: req.body.status
   });
-  
-
- 
   
   try {
     // Check if the venue already exists in the database
@@ -269,6 +233,8 @@ app.post('/concerts/delete/:id', (req, res) => {
   const concertId = req.params.id;
   const objectId = new mongoose.Types.ObjectId(concertId);
 
+
+  //delete venues
   ConcertModel.deleteOne({_id: objectId})
     .then(() => {
       res.redirect('/home');
@@ -343,6 +309,6 @@ router.get('/callback', (req,res)=> {
 
 app.use('/', router);
 
-// app.listen(process.env.PORT || 3000);
-app.listen(3000);
+app.listen(process.env.PORT || 3000);
+// app.listen(3000);
 
