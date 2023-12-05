@@ -12,8 +12,16 @@
         Date: <input type="Date" name="date">
     </div>
     <div>
-        Status: <input type="text" name="status">
+        Status:
+       <select id="status" name="Status" required>
+            <option value="upcoming">Upcoming</option>
+            <option value="past">Past</option>
+          
+        </select>  
     </div>
 
-    <input type="submit" value="Submit">
+    <div class="submit-btn">
+        <input type="submit" value="Submit">
+
+    </div>
 </form>

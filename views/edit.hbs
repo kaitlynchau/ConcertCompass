@@ -12,7 +12,12 @@
         Date: <input type="Date" name="date"placeholder="Date"value="{{concert.date}}">
     </div>
     <div>
-        Status: <input type="text" name="status"placeholder="Status"value="{{concert.status}}">
+        Status:
+       <select id="status" name="Status"value="{{concert.status}}" required>
+            <option value="upcoming">Upcoming</option>
+            <option value="past">Past</option>
+          
+        </select>  
     </div>
 
     <input type="submit" value="Save Changes">

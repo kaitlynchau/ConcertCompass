@@ -25,8 +25,8 @@ app.use(express.urlencoded({ extended: false }));
 const spotifyApi = new SpotifyWebApi({
   clientId: process.env.SPOTIFY_CLIENT_ID,
   clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
-  redirectUri: 'http://localhost:3000/callback'
-  // redirectUri: 'http://linserv1.cims.nyu.edu:15271/callback'
+  // redirectUri: 'http://localhost:3000/callback'
+  redirectUri: 'http://linserv1.cims.nyu.edu:15271/callback'
 });
 
 function getAccessToken() {
@@ -34,16 +34,13 @@ function getAccessToken() {
   return new Promise((resolve, reject) => {
     spotifyApi.refreshAccessToken()
       .then(data => {
-        // console.log('The access token expires in ' + data.body['expires_in']);
-        // console.log('The access token is ' + data.body['access_token']);
-        // console.log('The refresh token is ' + data.body['refresh_token']);
         spotifyApi.setAccessToken(data.body['access_token']);
         spotifyApi.setRefreshToken(data.body['refresh_token']);
-        resolve(true); // Resolve the promise indicating success
+        resolve(true); 
       })
       .catch(err => {
         console.error('Error getting access token:', err);
-        reject(false); // Reject the promise indicating failure
+        reject(false);
       });
   });
 }
@@ -142,12 +139,6 @@ app.get('/home', async (req, res) => {
       try {
         await getMe();
         await topArtists();
-        // console.log('HERE IS TOP ARTIST DATA', topArtistsData);
-
-
-        // console.log('LENGTH', topArtistsData.items.length);
-        // console.log('THIS IS THE TOP ARTIST ARTIST ARTIST', topArtistsData.items[0].name);
-
   
         res.render('review', {user: dataBody , artist: topArtist, class: reviews, count: res.locals.count});
       }
@@ -196,6 +187,8 @@ app.get('/concerts/add', (req, res) => {
 
 
 app.post('/concerts/add', async (req, res) => {
+
+  
   const concert = new Concert({
     artist : req.body.artist,
     venue: req.body.venue,
@@ -238,16 +231,15 @@ app.post('/concerts/add', async (req, res) => {
 app.get('/concerts/edit/:id', (req, res) => {
   const concertId = req.params.id;
   
-  // Assuming your Concert model is named 'Concert' and you're using findById
+
   ConcertModel.findById(concertId)
     .then((concert) => {
       if (!concert) {
-        // Handle case where concert with provided ID is not found
         res.send('Concert not found');
         return;
       }
       
-      res.render('edit', { concert }); // Render the 'edit' view with the fetched concert data
+      res.render('edit', {user: dataBody, artist: topArtist, concert }); 
     })
     .catch((err) => {
       console.error(err);
@@ -335,6 +327,6 @@ router.get('/callback', (req,res)=> {
 
 app.use('/', router);
 
-// app.listen(process.env.PORT || 3000);
-app.listen(3000);
+app.listen(process.env.PORT || 3000);
+// app.listen(3000);
 

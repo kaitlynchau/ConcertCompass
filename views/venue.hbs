@@ -12,9 +12,9 @@
             <td>{{name}}</td>
             <td>{{location}}</td>
             <td>{{artists}}</td>
-            <td>
+            <td class="remove-entry">
                 <form action="/venues/delete/{{this._id}}" method="POST">
-                    <button type="submit">X</button>
+                    <button type="submit" class="delete-button">Delete</button>
                 </form>
             </td>
             

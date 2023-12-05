@@ -9,19 +9,18 @@
 <style>
 </style>
 <header>
-			<h1>Concert Compass</h1>
+			<h1 class="title">Concert Compass</h1>
 		
 	</header>
 <div id="userData"></div>
-	<p>Welcome, {{user.display_name}}!</p>
+	<p class="welcome">Welcome, {{user.display_name}}!</p>
 <div id="container">
 
 	<nav>
-		<ul>
-			
-			<li><a href="/">All Concerts</a></li>
-			<li><a href="/concerts/add">Add Concert</a></li>
-			<li><a href="/venues">Venues</a></li>
+		<ul class="tabs">
+			<li><a href="/" class="active">All Concerts</a></li>
+			<li><a href="/concerts/add" class="">Add Concert</a></li>
+			<li><a href="/venues"class="">Venues</a></li>
 		</ul>
 	</nav>
 	<div id="content">
@@ -29,37 +28,18 @@
 
 	</div> 
 
-	<div>
-		
-		<p>
-			Your Top Artists:
-		</p>
-		<ul>
-			{{#each artist.items}}
-				<li>{{name}}</li>
-			{{/each}}
-		</ul>
-		{{!-- {{#each artist}}
-        <tr>
-            <td>{{artist}}</td>
-            <td>{{venue}}</td>
-            <td>{{location}}</td>
-            <td>{{date}}</td>
-            <td>{{status}}</td>
-            <td>
-                <form action="/concerts/delete/{{this._id}}" method="POST">
-                    <button type="submit">X</button>
-                </form>
-            </td>
-            <td>
-               <a href="/concerts/edit/{{this._id}}">Edit</a>
-               
-            </td>
+	<div class="insights">
+    <h1 class="section-title">Insights</h1>
+    <div class="insights-content">
+        <h2 class="subheading">Top Artists:</h2>
+        <ul class="artist-list">
+            {{#each artist.items}}
+                <li>{{name}}</li>
+            {{/each}}
+        </ul>
+    </div>
+</div>
 
-            
-        </tr>
-    {{/each}} --}}
-	</div>
 
 </body>
 </html>

@@ -18,9 +18,9 @@
             <td>{{location}}</td>
             <td>{{date}}</td>
             <td>{{status}}</td>
-            <td>
+            <td class="remove-entry">
                 <form action="/concerts/delete/{{this._id}}" method="POST">
-                    <button type="submit">X</button>
+                    <button type="submit" class="delete-button">Delete</button>
                 </form>
             </td>
             <td>

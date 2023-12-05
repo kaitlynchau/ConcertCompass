@@ -2,22 +2,213 @@ body {
 	font-family: Helvetica, sans-serif;
 }
 
+
 table {
     width: 100%;
-    color: black;
-    font-size: 25px;
-    text-align: left;
+    color: #333; 
+    border-collapse: collapse; 
+    font-family: Arial, sans-serif;
+}
+
+
+th {
+    background-color: #f2f2f2;
+    padding: 8px;
+    border: 1px solid #ccc; 
+}
+
+td {
+    padding: 8px;
+    border: 1px solid #ccc; 
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #f2f2f2; 
+}
+
+
+
+
+.title {
+    font-size: 40px;
+    font-weight: bold;
     font-family: Helvetica, sans-serif;
 }
 
-td, th {
-    border: 2px solid black; 
-    font-size : 20px;
-    padding-left : 10px;
-    padding-right : 10px;
-    padding-top : 10px;
-    padding-bottom : 10px;
+.welcome {
+    font-size: 20px;
+    font-weight: bold;
+    font-style: italic;
     font-family: Helvetica, sans-serif;
+}
 
+.tabs {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    background-color: #f2f2f2; 
+}
+
+.tabs li {
+    flex: 1;
+}
+
+.tabs li a {
+    display: block;
+    padding: 10px 15px;
+    text-decoration: none;
+    text-align: center;
+    color: #333; 
+    background-color: #ddd; 
+    transition: background-color 0.3s; 
+}
+
+.tabs li a:hover {
+    background-color: #ce7878;
+    color: #fff; 
+}
+
+.tabs li a.active {
+    background-color: #888; 
+    color: #fff; 
+    font-weight: bold; 
+}
+
+.insights {
+    background-color: #f9f9f9;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 40px;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 40px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.insights-content {
+    text-align: center;
+}
+
+
+.artist-list {
+    list-style: none; 
+    counter-reset: list-counter; 
+    padding-left: 0; 
+}
+
+.artist-list li {
+    position: relative;
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #555;
+    font-family: 'Arial', sans-serif;
+    display: flex; 
+    align-items: center;
+}
+
+.artist-list li:before {
+    content: counter(list-counter); 
+    color: #fe7979;
+    font-weight: bold;
+    margin-right: 10px; 
+    counter-increment: list-counter; 
+}
+
+
+form {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+form input[type="text"],
+form input[type="date"] {
+    width: calc(100% - 20px); 
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+form input[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background-color: #ce7878;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+form input[type="submit"]:hover {
+    background-color: #ce7878;
+}
+
+
+.subheading{
+    font-size: 25px;
+    font-weight: bold;
+    font-family: Helvetica, sans-serif;
+}
+
+.submit-btn{
+     margin-top: 10px;
+
+}
+
+
+.remove-entry form {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+}
+.remove-entry button {
+    background-color: transparent;
+    color: #dc3545;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+}
+
+.remove-entry button:hover {
+    color: #c82333;
+}
+
+
+.delete-button {
+    background-color: transparent; 
+    color: #dc3545; 
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: color 0.3s ease; 
+}
+
+.delete-button:hover {
+    color: #c82333;
+    background-color: transparent; 
 }
 
