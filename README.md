@@ -5,16 +5,15 @@
 Concerts are a great way to spend time with friends while enjoying new and unique music. In a city like New York where there is an event always happening, it can be difficult to keep track of concerts happening nearby, as well as memorializing all the concerts that you have been to. 
 Concert Compass solves just that!
 
-Concert Compass is a web application that allows users to log all the concerts that they have attended. Users can register and login. Once they're logged in, they can create and view the different concerts that they have attended in the past or in the future. In addition, they can view insights on their attendance at concerts, like location and genre.
+Concert Compass is a web application that allows users to log all the concerts that they have attended. Users can register and login using Spotify API. Once they're logged in, they can create and view the different concerts that they have attended in the past or in the future. In addition, they can view insights on their top artists, centralizing everything music into one applicaiton.
 
 
 ## Data Model
 
-The application will store Users and Concert Log. 
+The application will store Venues and Concert Log. 
 
-* each users can attend many concerts (1- many user-concert)
-* each user can have one associated account (1-1 user-account)
-* each concert can be attended by many users (many-many concert-user)
+* each concert has one venue (1-1 user-venue)
+* each venue can have multiple associated concerts (1-many user-account)
 
 
 An Example Venue:
@@ -56,18 +55,15 @@ An Example Concert:
 ## [Site map](documentation/sitemap.png)
 
 
-## User Stories or Use Cases
+## Use Cases
 
-1. as non-registered user, I can register a new account with the site.
-2. as a user, I can log in to the site.
-3. as a user, I can log a new concert that is either upcoming or attended.
+1. As a user, I can view the concerts I attended or will attend.
+2. As a user, I can log in to the site using Spotify.
+3. As a user, I can log a new concert that is either upcoming or attended.
 4. as a user, I can view all of the concerts that I have attended or will attend.
-6. as a user, I can view the automatically updated lists of concerts.
-7. as a user, I can view insights on my concert attendance.
+7. as a user, I can view insights on my top artists.
 
 ## Research Topics
-
-
 
 * (3 points) dotenv Configuration Management
     * Used dotenv to store sensitive information regarding MongoDB database and auth for Spotify API.
@@ -77,7 +73,7 @@ An Example Concert:
    * Use Spotify API to gather information about concert artists and data from the user.
 * (3 points) Build Tools : Makefile
    * Used Makefile to automate linting and compilation process.
-11 points total out of 10 required points 
+14 points total out of 10 required points 
 
 
 ## [Link to Initial Main Project File](src/App.mjs) 
@@ -88,3 +84,5 @@ An Example Concert:
   -  [Source](src)
 2. [Mongoose Databases](https://cs.nyu.edu/courses/fall23/CSCI-UA.0467-001/_site/homework/04.html) 
   -  [Database](src/db.mjs)
+3. [Spotify using Node](https://youtu.be/NA6acNDmSFo?si=U2YRKIBPH5r9W5qu)
+  - [App](app.mjs)

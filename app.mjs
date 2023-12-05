@@ -76,7 +76,7 @@ const topArtists = () => {
       return getAccessToken(spotifyApi)
         .then(() => topArtists()); // Recursive call to topArtists after refreshing access token
     });
-}
+};
 
 
 
